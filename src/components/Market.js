@@ -1,31 +1,45 @@
 import React, { Component } from 'react'
 import Item from './Item';
 // import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 // import '../styles/Market.css'
 
+@inject(`Inventory`)
 @observer
 class Market extends Component {
+    state = {
+        newItem: ``
+    }
+    inputChange = e => this.setState({ newItem: e.target.value })
     addItem = e => {
-        if (e.which === 13) {
-            this.props.inventory.addItem(e.target.value)
+        if (this._checkForEnterKey(e.which)) {
+            this.props.Inventory.addItem(this.state.newItem)
+            this.setState({ newItem: `` })
         }
     }
     buyItem = (name) => {
-        this.props.inventory.buyItem(name)
+        this.props.Inventory.buyItem(name)
     }
     changeItem = (name, price) => {
-        this.props.inventory.changeItem(name, price)
+        this.props.Inventory.changeItem(name, price)
     }
+    _checkForEnterKey = (num) => num === 13 ? true : false
     render() {
         return (
             <div>
-                <input type="text" onKeyPress={this.addItem} />
-                {this.props.inventory.items.map(item => <Item
-                    buyItem={this.buyItem}
-                    changeItem={this.changeItem}
-                    item={item}
+                <div>
+                    {this.props.Inventory.numItems}
+                </div>
+                <input type="text"
+                    onChange={this.inputChange}
+                    onKeyPress={this.addItem}
+                    value={this.state.newItem}
+                />
+                {this.props.Inventory.items.map((item, index) => <Item
+                    key={item.name}
+                    index={index}
                 />)}
+
             </div>
         )
     }

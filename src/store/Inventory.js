@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx'
+import { action, observable, computed } from 'mobx'
 
 class Item {
     @observable name
@@ -11,6 +11,11 @@ class Item {
 
 class Inventory {
     @observable items = []
+    @computed get numItems (){
+        let count = 0
+        this.items.forEach(item=>count +=item.quantity)
+        return count
+    } 
     @action addItem = (name) => {
         let index = this.items.findIndex(item => item.name === name)
         index !== -1 ? this.items[index].quantity++ : this.items.push(new Item(name))

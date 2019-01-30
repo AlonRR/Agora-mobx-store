@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { observer } from 'mobx-react';
+import { observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools'
 import Market from './components/Market';
 
@@ -11,7 +10,7 @@ class App extends Component {
     return (
       <div className="App">
         <DevTools />
-        <Market inventory={this.props.inventory} />
+        <Market />
       </div>
     );
   }
